@@ -1,0 +1,54 @@
+ObjC.import('Cocoa');
+
+function run() {
+  const app = $.NSApplication.sharedApplication;
+  app.setActivationPolicy($.NSApplicationActivationPolicyAccessory);
+  const menu = $.NSMenu.alloc.initWithTitle('');
+  const editItem = $.NSMenuItem.alloc.initWithTitleActionKeyEquivalent('编辑', '', '');
+  const edit = $.NSMenu.alloc.initWithTitle('编辑');
+  for (const pair of [['全选', 'selectAll:', 'a'], ['粘贴', 'paste:', 'v'], ['剪切', 'cut:', 'x']]) {
+    const item = $.NSMenuItem.alloc.initWithTitleActionKeyEquivalent(pair[0], pair[1], pair[2]);
+    item.keyEquivalentModifierMask = $.NSEventModifierFlagCommand;
+    edit.addItem(item);
+  }
+  editItem.submenu = edit;
+  menu.addItem(editItem);
+  app.mainMenu = menu;
+  const alert = $.NSAlert.alloc.init;
+  alert.messageText = 'Codex Model Bridge · API Key 测试';
+  alert.informativeText = '填入你已有的 Key，可先填一家。仅保留在本机测试进程内存中，不写入聊天或项目文件。每家通常进行 4 次小请求；明确的状态错误最多额外重试一次/项。额度扣账来源需另查账单。';
+  alert.addButtonWithTitle('提交并测试');
+  alert.addButtonWithTitle('取消');
+
+  const view = $.NSView.alloc.initWithFrame($.NSMakeRect(0, 0, 500, 172));
+  function label(text, y) {
+    const field = $.NSTextField.labelWithString(text);
+    field.frame = $.NSMakeRect(0, y, 500, 24);
+    view.addSubview(field);
+  }
+  function password(y) {
+    const field = $.NSSecureTextField.alloc.initWithFrame($.NSMakeRect(0, y, 500, 28));
+    field.placeholderString = 'API Key（可留空）';
+    view.addSubview(field);
+    return field;
+  }
+  label('OpenAI API Key → api.openai.com', 144);
+  const openai = password(112);
+  label('DeepSeek API Key → api.deepseek.com', 70);
+  const deepseek = password(38);
+  alert.accessoryView = view;
+  alert.window.initialFirstResponder = openai;
+  app.activateIgnoringOtherApps(true);
+
+  while (true) {
+    const answer = alert.runModal;
+    if (Number(answer) !== 1000) return JSON.stringify({ canceled: true });
+    const first = ObjC.unwrap(openai.stringValue).trim();
+    const second = ObjC.unwrap(deepseek.stringValue).trim();
+    if ((first || second) && !/\s/.test(first + second)) return JSON.stringify({ openai: first, deepseek: second });
+    const notice = $.NSAlert.alloc.init;
+    notice.messageText = '请至少填入一家 Key，并去掉空格或换行。';
+    notice.addButtonWithTitle('返回');
+    notice.runModal;
+  }
+}
