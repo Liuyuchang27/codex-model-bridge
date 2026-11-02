@@ -6,7 +6,7 @@
 
 ## 能做什么
 
-- 保留官方模型原始 ID，为两个 API 路线使用独立别名。
+- 保留官方模型原始 ID，为每个 API 模型使用独立别名；DeepSeek Flash 与 V4 Pro 共用同一家 Key。
 - 通过 Codex 自身的配置接口安装、备份和恢复接入配置。
 - 在 macOS 登录钥匙串保存 API Key，后台重启后自动读取。
 - 按模型和供应商统计输入、输出、缓存、推理、失败和未知用量。
@@ -18,8 +18,11 @@
 | 官方模型 · 订阅 | 官方 Codex 服务 | Codex 当前 ChatGPT 登录 |
 | GPT-6.1 Sol · API | OpenAI API | 本机提供的 OpenAI Key |
 | DeepSeek Flash · API | DeepSeek API | 本机提供的 DeepSeek Key |
+| DeepSeek V4 Pro · API | DeepSeek API | 同一把 DeepSeek Key |
 
 模型示例不代表账户权限保证。使用前确认上游提供相应模型，并使配置和模型目录与当前 Codex 版本一致。
+
+DeepSeek Pro 对应上游 ID `deepseek-v4-pro`。Flash 与 Pro 在 Codex 菜单、网页测试下拉框和用量卡片中分别展示；当前上游目录中 Pro 仅接收文字，Flash 还支持图片。网页的 DeepSeek 卡片可选择要测试的模型，无需再填写一把 Key。模型能力以供应商当前目录和实际响应为准。
 
 ## 快速开始
 
@@ -79,13 +82,21 @@ npm run check:public
 
 本机自动测试使用合成数据和本机模拟上游，不消耗 API 额度。验证范围见 [TEST_RESULTS.md](TEST_RESULTS.md)。真实 API 检查需要使用者自己的凭据，可能产生费用；其回执必须留在 Git 忽略的本机目录。
 
-已运行后台并配置两家 Key 后，可选择执行四轮临时对话检查：
+已运行后台并配置两家 Key 后，可选择执行五轮临时对话检查：
 
 ```bash
 npm run unified-probe -- "$(command -v codex)"
 ```
 
-该探针验证订阅 → OpenAI API → DeepSeek → 订阅的普通对话历史续接，使用精简说明，不证明全部原生工具或旧聊天迁移。回执写入 `.runtime/receipts/`。其他底层探针见 `scripts/`，不应把小型测试目录用于日常模型配置。
+该探针验证订阅 → OpenAI API → DeepSeek Flash → DeepSeek V4 Pro → 订阅的普通对话历史续接，使用精简说明，不证明全部原生工具或旧聊天迁移。回执写入 `.runtime/receipts/`。其他底层探针见 `scripts/`，不应把小型测试目录用于日常模型配置。
+
+只检查 Flash → Pro → Flash 的三轮历史续接时，可使用：
+
+```bash
+npm run unified-probe -- "$(command -v codex)" --deepseek-only
+```
+
+此模式只调用 DeepSeek API，需要已有 Codex ChatGPT 登录以使用统一 provider，但不会调用订阅或 OpenAI API 模型，也不改默认模型。回执保存在私有 `.runtime/receipts/deepseek-models.json`，不要提交到公开仓库。
 
 ## 限制
 

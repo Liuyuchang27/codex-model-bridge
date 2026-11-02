@@ -16,11 +16,18 @@
   "routes": {
     "openai-api/gpt-6.1-sol": {
       "provider": "openai",
-      "model": "gpt-6.1-sol"
+      "model": "gpt-6.1-sol",
+      "displayName": "GPT-6.1 Sol · API"
     },
     "deepseek/deepseek-flash": {
       "provider": "deepseek",
-      "model": "deepseek-flash"
+      "model": "deepseek-flash",
+      "displayName": "DeepSeek Flash · API"
+    },
+    "deepseek/deepseek-v4-pro": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "displayName": "DeepSeek V4 Pro · API"
     }
   }
 }

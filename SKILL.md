@@ -29,6 +29,8 @@ Code upgrades to an already running old server require a one-time restart. Saved
 
 ## Interpret results
 
+DeepSeek Flash and V4 Pro use distinct aliases but share the same DeepSeek Keychain credential. Use the model selector in the provider card to test either model. A bounded Flash → Pro → Flash history check is available with `npm run unified-probe -- <installed-cli> --deepseek-only`; it uses only the DeepSeek API, writes private receipts and does not change the user's default model. Pro is text-only in the current upstream catalog; do not copy Flash's image capabilities into it.
+
 Report separately: local tests, real provider response, Codex client integration, and verified credit balance movement. A successful HTTP response is not proof that promotional credits were used. The official Pro API-credit benefit currently excludes Codex API-key usage; do not claim a gateway changes that rule or disguise the caller to influence billing.
 
 This version preserves HTTP/SSE responses and tool-call history. When an upstream explicitly rejects encrypted reasoning or a nonempty reasoning-content array, it can retry once with incompatible reasoning omitted and foreign-format item IDs removed, using the same provider. Keep `call_id` pairings intact. It cannot decrypt prior state, recover an opaque compaction block, or safely discard an encrypted subagent task or item reference. Return the failure in those cases.
