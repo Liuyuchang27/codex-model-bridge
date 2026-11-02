@@ -1,0 +1,23 @@
+{
+  "name": "codex-model-bridge",
+  "version": "0.5.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Local Responses API gateway for Codex subscription, OpenAI API and DeepSeek API models.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.14"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check:public": "node scripts/check-public.mjs",
+    "dashboard": "node scripts/start-dashboard.mjs",
+    "start": "node scripts/bridge.mjs config.json",
+    "probe": "node scripts/probe.mjs",
+    "prepare-probe": "node scripts/probe-catalog.mjs",
+    "codex-probe": "node scripts/codex-cli-probe.mjs",
+    "session-probe": "node scripts/codex-session-probe.mjs",
+    "key-window": "node scripts/test-session.mjs",
+    "unified-probe": "node scripts/unified-probe.mjs"
+  }
+}

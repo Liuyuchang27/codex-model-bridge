@@ -1,0 +1,31 @@
+# Local credentials and runtime state
+.runtime/
+receipts/
+evidence/*
+!evidence/README.md
+config.json
+auth.json
+config.toml
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.sqlite*
+*.db
+*.db-*
+*.log
+*.bak
+*.backup
+# Local captures and exports
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.har
+*.zip
+.DS_Store
+node_modules/
+coverage/

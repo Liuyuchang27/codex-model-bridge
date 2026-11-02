@@ -1,0 +1,26 @@
+{
+  "host": "127.0.0.1",
+  "port": 17631,
+  "accessTokenEnv": "CODEX_BRIDGE_TOKEN",
+  "timeoutMs": 300000,
+  "providers": {
+    "openai": {
+      "baseUrl": "https://api.openai.com/v1",
+      "apiKeyEnv": "OPENAI_API_KEY"
+    },
+    "deepseek": {
+      "baseUrl": "https://api.deepseek.com",
+      "apiKeyEnv": "DEEPSEEK_API_KEY"
+    }
+  },
+  "routes": {
+    "openai-api/gpt-6.1-sol": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol"
+    },
+    "deepseek/deepseek-flash": {
+      "provider": "deepseek",
+      "model": "deepseek-flash"
+    }
+  }
+}
