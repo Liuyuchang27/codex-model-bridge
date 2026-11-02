@@ -14,7 +14,7 @@ export function buildDesktopCatalog(config, catalogs) {
     const native = catalogs[route.provider]?.models?.find(m => m.slug === route.model);
     if (!native) throw new Error(`Native model metadata is missing for ${alias}.`);
     return { ...structuredClone(native), slug: alias,
-      display_name: route.provider === 'openai' ? 'GPT-6.1 Sol · API' : 'DeepSeek Flash · API',
+      display_name: route.displayName ?? (native.display_name ?? route.model) + ' · API',
       description: `Local gateway · ${route.provider} API key · ${route.model}`,
       visibility: 'list', priority: i + 1, upgrade: null,
       prefer_websockets: false, use_responses_lite: false,

@@ -129,7 +129,7 @@ const server=createBridge(gatewayConfig,{env,catalog:unifiedCatalog,onRequestSta
       const input=await body(req);if(!Object.hasOwn(config.routes,input.model))throw new Error('Unknown model alias.');
       const testedKeyUpdatedAt=keyUpdatedAt[config.routes[input.model].provider]??null;
       const upstream=await fetch(baseUrl+'/v1/responses',{method:'POST',headers:{authorization:`Bearer ${token}`,'content-type':'application/json'},
-        body:JSON.stringify({model:input.model,input:'Reply exactly BRIDGE_OK.',max_output_tokens:128,reasoning:{effort:'low'},stream:false,store:false}),signal:AbortSignal.timeout(60000)});
+        body:JSON.stringify({model:input.model,instructions:'For this connectivity check, return the user-provided marker verbatim, with no additional characters, quotes or Markdown.',input:'BRIDGE_OK',max_output_tokens:128,reasoning:{effort:'low'},stream:false,store:false}),signal:AbortSignal.timeout(60000)});
       const result=await upstream.json();const text=(result.output??[]).flatMap(item=>item.content??[]).filter(item=>item.type==='output_text').map(item=>item.text).join('');
       json(res,200,{passed:upstream.ok&&result.status==='completed'&&text.trim()==='BRIDGE_OK',responseStatus:['completed','failed','incomplete'].includes(result.status)?result.status:null,status:upstream.status,testedKeyUpdatedAt,
         network:publicNetworkError(result.error?.network),errorCode:typeof result.error?.code==='string'&&/^[a-z_]{1,80}$/.test(result.error.code)?result.error.code:null});return true;
